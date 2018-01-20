@@ -1,12 +1,13 @@
 #include "runthread.h"
 using namespace std;
 
-RunThread::RunThread(int type, QString attack, QString hashlist, long long skip, long long length){
+RunThread::RunThread(int type, QString attack, QString hashlist, long long skip, long long length, int timeout){
     this->type = type;
     this->attack = attack;
     this->skip = skip;
     this->length = length;
     this->hashlist = hashlist;
+    this->timeout = timeout;
 }
 
 void RunThread::run(){
@@ -68,6 +69,7 @@ void RunThread::run(){
     long long int crackedCounter = 0;
     time_t lastUpdate = time(NULL);
     long long int lastCounter = 0;
+    time_t startTime = time(NULL);
     while(this->getNext(combo, lengthCounter)){
         // calculate hash of combo
         hash = QString(QCryptographicHash::hash(combo.toUtf8(), QCryptographicHash::Md5).toHex());
@@ -91,8 +93,12 @@ void RunThread::run(){
         if(lengthCounter >= this->length){
             break; // we reached length limit
         }
+        else if(timeout > 0 && time(NULL) - startTime > timeout){
+            cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(lengthCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
+            return;
+        }
     }
-    cout << "STATUS 10000" << endl;
+    cout << "STATUS 10000 0" << endl;
     //qDebug() << "Finished!";
     //qDebug() << "Cracked:" << crackedCounter;
 }

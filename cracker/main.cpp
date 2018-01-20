@@ -4,6 +4,7 @@
 
 #include "keyspacethread.h"
 #include "runthread.h"
+using namespace std;
 
 int main(int argc, char *argv[]){
     QCoreApplication a(argc, argv);
@@ -42,13 +43,18 @@ int main(int argc, char *argv[]){
            QCoreApplication::translate("main", "length"));
     parser.addOption(lengthOption);
 
+    QCommandLineOption timeoutOption(QStringList() << "timeout",
+           QCoreApplication::translate("main", "Stop cracking process after fixed amount of time"),
+           QCoreApplication::translate("main", "seconds"));
+    parser.addOption(timeoutOption);
+
     // Process the actual command line arguments given by the user
-    parser.process(a);
+    parser.parse(a.arguments());
 
     const QStringList args = parser.positionalArguments();
     QString action = args.at(0);
 
-    qDebug() << "Executing action: " + action;
+    //qDebug() << "Executing action: " + action;
 
     QThread *thread;
     if(action.compare("keyspace") == 0){
@@ -67,6 +73,7 @@ int main(int argc, char *argv[]){
     else if(action.compare("crack") == 0){
         long long int skip = parser.value(skipOption).toLong();
         long long int length = parser.value(lengthOption).toLong();
+        int timeout = parser.value(timeoutOption).toInt();
         QString hashlist = parser.value(hashlistOption);
         int type = 0;
         QString attack = "";
@@ -78,7 +85,11 @@ int main(int argc, char *argv[]){
             type = 2;
             attack = parser.value(wordlistOption);
         }
-        thread = new RunThread(type, attack, hashlist, skip, length);
+        thread = new RunThread(type, attack, hashlist, skip, length, timeout);
+    }
+    else{
+        cerr << "Invalid action!" << endl;
+        return -1;
     }
 
     QObject::connect(thread, SIGNAL(finished()), &a, SLOT(quit()));

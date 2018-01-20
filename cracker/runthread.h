@@ -14,7 +14,7 @@ class RunThread : public QThread
 {
     Q_OBJECT
 public:
-    RunThread(int type, QString attack, QString hashlist, long long int skip, long long int length);
+    RunThread(int type, QString attack, QString hashlist, long long int skip, long long int length, int timeout);
 
 private:
     int type;
@@ -22,6 +22,7 @@ private:
     long long int skip;
     long long int length;
     QString hashlist;
+    int timeout;
 
     QFile *wordlistFile;
     QTextStream *inputStream;
