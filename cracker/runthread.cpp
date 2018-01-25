@@ -136,7 +136,6 @@ bool RunThread::getNext(QString &combo, long long int pos){
     }
     else{
         if(this->inputStream->atEnd()){
-            cerr << "Wordlist not large enough to satisfy length!" << endl;
             return false;
         }
         combo = this->inputStream->readLine();
