@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QMutex>
 #include <QList>
+#include <atomic>
 
 #include <iostream>
 

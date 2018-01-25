@@ -85,9 +85,16 @@ void RunThread::run(){
         t->start();
     }
 
-    while(true){
-        // try to verify every hash of combo
+    bool run = true;
+    while(run){
         usleep(50000);
+        run = false;
+        for(CoreThread *t: threads){
+            if(t->isRunning()){
+                run = true;
+                break;
+            }
+        }
 
         if(time(NULL) - lastUpdate >= 5){
             // show update
