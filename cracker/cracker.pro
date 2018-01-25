@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     libbcrypt-master/src/bcrypt.c \
     libbcrypt-master/src/crypt_blowfish.c \
     libbcrypt-master/src/crypt_gensalt.c \
-    libbcrypt-master/src/wrapper.c
+    libbcrypt-master/src/wrapper.c \
+    corethread.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -36,4 +37,5 @@ HEADERS += \
     libbcrypt-master/include/bcrypt/crypt_blowfish.h \
     libbcrypt-master/include/bcrypt/crypt_gensalt.h \
     libbcrypt-master/include/bcrypt/crypt.h \
-    libbcrypt-master/include/bcrypt/ow-crypt.h
+    libbcrypt-master/include/bcrypt/ow-crypt.h \
+    corethread.h

@@ -10,22 +10,21 @@
 #include <QCryptographicHash>
 #include <QDebug>
 #include <cmath>
+#include <QMutex>
 
 #include "libbcrypt-master/include/bcrypt/bcrypt.h"
 #include "libbcrypt-master/include/bcrypt/BCrypt.hpp"
 
-struct BcryptHash {
-    QString original;
-    int cost;
-    char salt[BCRYPT_HASHSIZE];
-    char hash[BCRYPT_HASHSIZE];
-};
+class RunThread;
+
+#include "corethread.h"
 
 class RunThread : public QThread
 {
     Q_OBJECT
 public:
     RunThread(int type, QString attack, QString hashlist, long long int skip, long long int length, int timeout);
+    bool getNext(QString &combo, long long pos);
 
 private:
     int type;
@@ -42,7 +41,6 @@ private:
 
     void run();
     int gotoSkipFile();
-    bool getNext(QString &combo, long long pos);
 };
 
 #endif // RUNTHREAD_H

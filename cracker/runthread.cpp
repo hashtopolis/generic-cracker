@@ -71,37 +71,31 @@ void RunThread::run(){
     }
 
     //qDebug() << "Starting attack...";
-    QString combo;
-    long long int lengthCounter = 0;
-    long long int crackedCounter = 0;
+    atomic<long long int> lengthCounter(0);
+    atomic_llong crackedCounter(0);
     time_t lastUpdate = time(NULL);
-    long long int lastCounter = 0;
+    atomic_llong lastCounter(0);
     time_t startTime = time(NULL);
-    int m = 0;
-    long long int hashingCounter = 0;
-    while(this->getNext(combo, lengthCounter)){
+    atomic_llong hashingCounter(0);
+    QMutex mutex;
+    QList<CoreThread*> threads;
+    for(int i=0;i<8;i++){
+        CoreThread *t = new CoreThread(&lengthCounter, &crackedCounter, &hashingCounter, timeout, startTime, this->length, this, &this->hashes, &mutex);
+        threads.append(t);
+        t->start();
+    }
+
+    while(true){
         // try to verify every hash of combo
-        for(BcryptHash *h: this->hashes){
-            m = BCrypt::validatePassword(combo.toStdString(), h->original.toStdString());
-            hashingCounter++;
-            if(m == 1){
-                // found
-                cout << h->original.toStdString() << ":" << combo.toStdString() << endl;
-                delete h;
-                this->hashes.removeOne(h);
-                crackedCounter++;
-            }
+        usleep(50000);
 
-            if(time(NULL) - lastUpdate >= 5){
-                // show update
-                cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(hashingCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
-                lastCounter = hashingCounter;
-                lastUpdate = time(NULL);
-            }
+        if(time(NULL) - lastUpdate >= 5){
+            // show update
+            cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(hashingCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
+            lastCounter.store(hashingCounter);
+            lastUpdate = time(NULL);
         }
-
-        lengthCounter++;
-        if(lengthCounter >= this->length){
+        else if(lengthCounter >= this->length){
             break; // we reached length limit
         }
         else if(timeout > 0 && time(NULL) - startTime > timeout){
@@ -109,6 +103,10 @@ void RunThread::run(){
             return;
         }
     }
+    for(CoreThread *t: threads){
+        t->wait();
+    }
+
     cout << "STATUS 10000 0" << endl;
     //qDebug() << "Finished!";
     //qDebug() << "Cracked:" << crackedCounter;
