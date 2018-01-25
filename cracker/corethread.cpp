@@ -29,6 +29,9 @@ void CoreThread::run(){
         // try to verify every hash of combo
         for(int n=0;n<this->hashes->length();n++){
             h = this->hashes->at(n);
+            if(h->found){
+                continue;
+            }
             m = BCrypt::validatePassword(combo.toStdString(), h->original.toStdString());
             hashingCounter->fetch_add(1);
             if(m == 1){
