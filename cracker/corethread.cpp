@@ -20,7 +20,7 @@ void CoreThread::run(){
     BcryptHash *h;
     while(work){
         mutex->lock();
-        if(!parent->getNext(combo, (long long int)lengthCounter)){
+        if(!parent->getNext(combo, lengthCounter->load())){
             mutex->unlock();
             break;
         }
@@ -41,7 +41,7 @@ void CoreThread::run(){
         }
 
         lengthCounter++;
-        if((long long int)lengthCounter >= this->length){
+        if(lengthCounter->load() >= this->length){
             break; // we reached length limit
         }
         else if(timeout > 0 && time(NULL) - startTime > timeout){

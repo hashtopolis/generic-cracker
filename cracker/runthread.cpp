@@ -92,13 +92,12 @@ void RunThread::run(){
         for(CoreThread *t: threads){
             if(t->isRunning()){
                 run = true;
-                break;
             }
         }
 
         if(time(NULL) - lastUpdate >= 5){
             // show update
-            cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(hashingCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
+            cout << "STATUS " << (int)floor((double)lengthCounter.load()/this->length*10000) << " " << (int)(((double)(hashingCounter.load() - lastCounter.load()))/(time(NULL) - lastUpdate)) << endl;
             lastCounter.store(hashingCounter);
             lastUpdate = time(NULL);
         }
@@ -106,7 +105,7 @@ void RunThread::run(){
             break; // we reached length limit
         }
         else if(timeout > 0 && time(NULL) - startTime > timeout){
-            cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(hashingCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
+            cout << "STATUS " << (int)floor((double)lengthCounter.load()/this->length*10000) << " " << (int)(((double)(hashingCounter.load() - lastCounter.load()))/(time(NULL) - lastUpdate)) << endl;
             return;
         }
     }
