@@ -30,17 +30,17 @@ void CoreThread::run(){
         for(int n=0;n<this->hashes->length();n++){
             h = this->hashes->at(n);
             m = BCrypt::validatePassword(combo.toStdString(), h->original.toStdString());
-            hashingCounter++;
+            hashingCounter->fetch_add(1);
             if(m == 1){
                 // found
                 cout << h->original.toStdString() << ":" << combo.toStdString() << endl;
                 h->found = true;
                 this->hashes->replace(n, h);
-                crackedCounter++;
+                crackedCounter->fetch_add(1);
             }
         }
 
-        lengthCounter++;
+        lengthCounter->fetch_add(1);
         if(lengthCounter->load() >= this->length){
             break; // we reached length limit
         }
