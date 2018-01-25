@@ -11,7 +11,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     keyspacethread.cpp \
-    runthread.cpp
+    runthread.cpp \
+    libbcrypt-master/src/bcrypt.c \
+    libbcrypt-master/src/crypt_blowfish.c \
+    libbcrypt-master/src/crypt_gensalt.c \
+    libbcrypt-master/src/wrapper.c
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -26,4 +30,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
     keyspacethread.h \
-    runthread.h
+    runthread.h \
+    libbcrypt-master/include/bcrypt/bcrypt.h \
+    libbcrypt-master/include/bcrypt/BCrypt.hpp \
+    libbcrypt-master/include/bcrypt/crypt_blowfish.h \
+    libbcrypt-master/include/bcrypt/crypt_gensalt.h \
+    libbcrypt-master/include/bcrypt/crypt.h \
+    libbcrypt-master/include/bcrypt/ow-crypt.h

@@ -4,16 +4,18 @@
 
 #include "keyspacethread.h"
 #include "runthread.h"
+
+#include "libbcrypt-master/include/bcrypt/BCrypt.hpp"
 using namespace std;
 
 int main(int argc, char *argv[]){
     QCoreApplication a(argc, argv);
 
-    QCoreApplication::setApplicationName("generic-cracker");
-    QCoreApplication::setApplicationVersion("0.1");
+    QCoreApplication::setApplicationName("generic-cracker-bcrypt");
+    QCoreApplication::setApplicationVersion("0.1.0");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Generic Cracker compatible with Hashtopussy");
+    parser.setApplicationDescription("Generic Cracker for BCrypt compatible with Hashtopussy");
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("action", QCoreApplication::translate("main", "Action to execute (keyspace, benchmark or crack)"));

@@ -35,12 +35,20 @@ void RunThread::run(){
     file.open(QIODevice::ReadOnly);
     QTextStream in(&file);
     QString line;
+    BcryptHash *hashLoading = NULL;
     while( !in.atEnd()){
         line = in.readLine();
         if(line.length() == 0){
             continue;
         }
-        this->hashes.append(line);
+        else if(line.length() != 60){
+            continue;
+        }
+        hashLoading = new BcryptHash();
+        hashLoading->original = line;
+        strcpy(hashLoading->salt, line.mid(0, 29).toStdString().c_str());
+        strcpy(hashLoading->hash, line.mid(29).toStdString().c_str());
+        hashes.append(hashLoading);
         hashCounter++;
     }
     file.close();
@@ -64,29 +72,32 @@ void RunThread::run(){
 
     //qDebug() << "Starting attack...";
     QString combo;
-    QString hash;
     long long int lengthCounter = 0;
     long long int crackedCounter = 0;
     time_t lastUpdate = time(NULL);
     long long int lastCounter = 0;
     time_t startTime = time(NULL);
+    int m = 0;
+    long long int hashingCounter = 0;
     while(this->getNext(combo, lengthCounter)){
-        // calculate hash of combo
-        hash = QString(QCryptographicHash::hash(combo.toUtf8(), QCryptographicHash::Md5).toHex());
+        // try to verify every hash of combo
+        for(BcryptHash *h: this->hashes){
+            m = BCrypt::validatePassword(combo.toStdString(), h->original.toStdString());
+            hashingCounter++;
+            if(m == 1){
+                // found
+                cout << h->original.toStdString() << ":" << combo.toStdString() << endl;
+                delete h;
+                this->hashes.removeOne(h);
+                crackedCounter++;
+            }
 
-        // check if in hashlist
-        if(this->hashes.contains(hash)){
-            // found
-            cout << hash.toStdString() << ":" << combo.toStdString() << endl;
-            this->hashes.removeOne(hash);
-            crackedCounter++;
-        }
-
-        if(time(NULL) - lastUpdate >= 5){
-            // show update
-            cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(lengthCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
-            lastCounter = lengthCounter;
-            lastUpdate = time(NULL);
+            if(time(NULL) - lastUpdate >= 5){
+                // show update
+                cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(hashingCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
+                lastCounter = hashingCounter;
+                lastUpdate = time(NULL);
+            }
         }
 
         lengthCounter++;
@@ -94,7 +105,7 @@ void RunThread::run(){
             break; // we reached length limit
         }
         else if(timeout > 0 && time(NULL) - startTime > timeout){
-            cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(lengthCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
+            cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(hashingCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
             return;
         }
     }

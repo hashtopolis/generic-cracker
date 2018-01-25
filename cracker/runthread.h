@@ -9,6 +9,17 @@
 #include <QTextStream>
 #include <QCryptographicHash>
 #include <QDebug>
+#include <cmath>
+
+#include "libbcrypt-master/include/bcrypt/bcrypt.h"
+#include "libbcrypt-master/include/bcrypt/BCrypt.hpp"
+
+struct BcryptHash {
+    QString original;
+    int cost;
+    char salt[BCRYPT_HASHSIZE];
+    char hash[BCRYPT_HASHSIZE];
+};
 
 class RunThread : public QThread
 {
@@ -27,7 +38,7 @@ private:
     QFile *wordlistFile;
     QTextStream *inputStream;
 
-    QList<QString> hashes;
+    QList<BcryptHash*> hashes;
 
     void run();
     int gotoSkipFile();
