@@ -98,6 +98,37 @@ void RunThread::run(){
         if(time(NULL) - lastUpdate >= 5){
             // show update
             cout << "STATUS " << (int)floor((double)lengthCounter.load()/this->length*10000) << " " << (int)(((double)(hashingCounter.load() - lastCounter.load()))/(time(NULL) - lastUpdate)) << endl;
+
+            // check for zaps
+            QFile zapFile("zap");
+            if(zapFile.exists()){
+                zapFile.open(QIODevice::ReadOnly);
+                QTextStream stream(&zapFile);
+                QString zap;
+                QList<QString> zaps;
+                BcryptHash *h;
+                while(!stream.atEnd()){
+                    zap = stream.readLine();
+                    if(zap.length() == 0){
+                        continue;
+                    }
+                    zaps.append(zap);
+                }
+                zapFile.close();
+                for(int n=0;n<this->hashes.length();n++){
+                    h = this->hashes.at(n);
+                    if(h->found){
+                        continue;
+                    }
+                    else if(!zaps.contains(h->original)){
+                        continue;
+                    }
+                    h->found = true;
+                    this->hashes.replace(n, h);
+                    crackedCounter.fetch_add(1);
+                }
+            }
+
             lastCounter.store(hashingCounter);
             lastUpdate = time(NULL);
         }
