@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
     QCoreApplication::setApplicationVersion("0.1");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Generic Cracker compatible with Hashtopussy");
+    parser.setApplicationDescription("Generic Cracker compatible with Hashtopolis");
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("action", QCoreApplication::translate("main", "Action to execute (keyspace, benchmark or crack)"));
