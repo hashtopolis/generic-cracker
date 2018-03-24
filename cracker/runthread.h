@@ -9,6 +9,7 @@
 #include <QTextStream>
 #include <QCryptographicHash>
 #include <QDebug>
+#include <cmath>
 
 class RunThread : public QThread
 {
