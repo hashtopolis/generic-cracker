@@ -1,12 +1,13 @@
 #include "runthread.h"
+#include <utility>
 using namespace std;
 
 RunThread::RunThread(int type, QString attack, QString hashlist, long long skip, long long length, int timeout){
     this->type = type;
-    this->attack = attack;
+    this->attack = std::move(attack);
     this->skip = skip;
     this->length = length;
-    this->hashlist = hashlist;
+    this->hashlist = std::move(hashlist);
     this->timeout = timeout;
 }
 

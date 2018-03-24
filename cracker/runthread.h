@@ -30,7 +30,7 @@ private:
 
     QList<QString> hashes;
 
-    void run();
+    void run() override;
     int gotoSkipFile();
     bool getNext(QString &combo, long long pos);
 };
