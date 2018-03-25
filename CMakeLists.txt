@@ -23,6 +23,7 @@ add_executable(cracker
         cracker/main.cpp
         cracker/keyspacethread.cpp
         cracker/runthread.cpp
+        cracker/corethread.cpp
         cracker/libbcrypt-master/src/bcrypt.c
         cracker/libbcrypt-master/src/crypt_blowfish.c
         cracker/libbcrypt-master/src/crypt_gensalt.c
@@ -30,6 +31,7 @@ add_executable(cracker
 
         cracker/keyspacethread.h
         cracker/runthread.h
+        cracker/corethread.h
         cracker/libbcrypt-master/include/bcrypt/bcrypt.h
         cracker/libbcrypt-master/include/bcrypt/BCrypt.hpp
         cracker/libbcrypt-master/include/bcrypt/crypt.h
