@@ -1,5 +1,7 @@
 # Hashtopolis Generic Cracker
 
+[![Build Status](https://travis-ci.org/s3inlc/hashtopolis-generic-cracker.svg?branch=master)](https://travis-ci.org/s3inlc/hashtopolis-generic-cracker)
+
 Generic cracker example which is compatible with Hashtopolis.
 
 This very limited MD5 cracker implementation should demonstrate how a cracker could look to provide the minimal functionality which allows to distribute it with Hashtopolis.
