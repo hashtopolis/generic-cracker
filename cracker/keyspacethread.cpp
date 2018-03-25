@@ -1,9 +1,10 @@
 #include "keyspacethread.h"
+#include <utility>
 using namespace std;
 
 KeyspaceThread::KeyspaceThread(int type, QString value){
     this->type = type;
-    this->value = value;
+    this->value = std::move(value);
 }
 
 void KeyspaceThread::run(){

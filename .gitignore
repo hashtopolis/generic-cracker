@@ -1,2 +1,4 @@
 .idea
 *Qt_5_9_0*
+cmake-build-debug
+cmake-build-release

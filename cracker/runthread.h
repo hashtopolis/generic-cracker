@@ -39,7 +39,7 @@ private:
 
     QList<BcryptHash*> hashes;
 
-    void run();
+    void run() override;
     int gotoSkipFile();
 };
 
