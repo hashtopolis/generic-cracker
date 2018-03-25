@@ -7,6 +7,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 
+set (CMAKE_CXX_STANDARD 11)
+
 IF (WIN32)
     # Set the path to your qt setup here
     set (CMAKE_PREFIX_PATH "C:/Qt/5.9/mingw53_32/")
