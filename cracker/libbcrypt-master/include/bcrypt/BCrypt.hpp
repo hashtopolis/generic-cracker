@@ -1,7 +1,7 @@
 #ifndef __BCRYPT__
 #define __BCRYPT__
 
-#include "libbcrypt-master/include/bcrypt/bcrypt.h"
+#include "cracker/libbcrypt-master/include/bcrypt/bcrypt.h"
 #include <string>
 #include <stdexcept>
 

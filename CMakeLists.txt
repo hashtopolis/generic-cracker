@@ -23,9 +23,19 @@ add_executable(cracker
         cracker/main.cpp
         cracker/keyspacethread.cpp
         cracker/runthread.cpp
+        cracker/libbcrypt-master/src/bcrypt.c
+        cracker/libbcrypt-master/src/crypt_blowfish.c
+        cracker/libbcrypt-master/src/crypt_gensalt.c
+        cracker/libbcrypt-master/src/wrapper.c
 
         cracker/keyspacethread.h
-        cracker/runthread.h)
+        cracker/runthread.h
+        cracker/libbcrypt-master/include/bcrypt/bcrypt.h
+        cracker/libbcrypt-master/include/bcrypt/BCrypt.hpp
+        cracker/libbcrypt-master/include/bcrypt/crypt.h
+        cracker/libbcrypt-master/include/bcrypt/crypt_blowfish.h
+        cracker/libbcrypt-master/include/bcrypt/crypt_gensalt.h
+        cracker/libbcrypt-master/include/bcrypt/ow-crypt.h)
 
 # Use the Widgets module from Qt 5.
 target_link_libraries(cracker Qt5::Core)

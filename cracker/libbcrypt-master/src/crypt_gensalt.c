@@ -26,7 +26,7 @@
 #endif
 
 /* Just to make sure the prototypes match the actual definitions */
-#include "libbcrypt-master/include/bcrypt/crypt_gensalt.h"
+#include "cracker/libbcrypt-master/include/bcrypt/crypt_gensalt.h"
 
 unsigned char _crypt_itoa64[64 + 1] =
 	"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
