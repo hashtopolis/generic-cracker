@@ -1,6 +1,6 @@
 # Hashtopolis Bcrypt Generic Cracker
 
-[![Build Status](https://travis-ci.org/s3inlc/hashtopolis-generic-cracker.svg?branch=bcrypt)](https://travis-ci.org/s3inlc/hashtopolis-generic-cracker)
+[![Build Status](https://travis-ci.com/hashtopolis/generic-cracker.svg?branch=bcrypt)](https://travis-ci.com/hashtopolis/generic-cracker)
 
 Generic cracker example which is compatible with Hashtopolis.
 
